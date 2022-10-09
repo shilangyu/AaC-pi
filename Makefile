@@ -2,7 +2,7 @@
 
 CXX      := clang
 SRC_EXT  := c
-CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
+CXXFLAGS := -pedantic-errors -Wall -Wextra
 LDFLAGS  := 
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
@@ -35,7 +35,7 @@ build:
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 
-release: CXXFLAGS += -O3
+release: CXXFLAGS += -O3 -Werror
 release: all
 
 clean:

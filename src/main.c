@@ -1,6 +1,9 @@
+#include "args.h"
 #include <stdio.h>
 
-int main() {
+int main(const int argc, const char **argv) {
+  args_t args = parse_args(argv, argc);
+
   // prints first 800 digits of pi,
   // source: https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
   int a = 10000, b = 0, c = 2800, d, e, f[2801], g;

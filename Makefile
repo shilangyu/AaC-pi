@@ -1,6 +1,7 @@
 # starter makefile, based on: https://www.partow.net/programming/makefile/index.html
 
-CXX      := clang++
+CXX      := clang
+SRC_EXT  := c
 CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS  := 
 BUILD    := ./build
@@ -8,14 +9,14 @@ OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 TARGET   := pi
 INCLUDE  := -Iinclude/
-SRC      := $(shell find src/ -name '*.cpp' | sort -k 1nr | cut -f2-)
+SRC      := $(shell find src/ -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
 
-OBJECTS      := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+OBJECTS      := $(SRC:%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
 DEPENDENCIES := $(OBJECTS:.o=.d)
 
 all: build $(APP_DIR)/$(TARGET)
 
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.$(SRC_EXT)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -MMD -o $@
 
@@ -34,7 +35,7 @@ build:
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 
-release: CXXFLAGS += -O2
+release: CXXFLAGS += -O3
 release: all
 
 clean:

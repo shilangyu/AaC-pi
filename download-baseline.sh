@@ -1,3 +1,3 @@
 #!/bin/sh
 
-curl -O https://files.monicz.pl/aac/pi-billion.txt
+curl -O --compressed https://files.monicz.pl/aac/pi-billion.txt

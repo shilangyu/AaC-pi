@@ -1,3 +1,3 @@
 #!/bin/sh
 
-curl -o- https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt | gzip > pi-baseline.txt.gz
+curl -O --compressed https://files.monicz.pl/aac/pi-billion.txt

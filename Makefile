@@ -9,7 +9,8 @@ OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 TARGET   := pi
 INCLUDE  := -Iinclude/
-SRC      := $(shell find src/ -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+SRC      := $(shell find src/  -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+TEST_SRC := $(shell find src/ test/ -not -path src/main.c -a -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
 
 OBJECTS      := $(SRC:%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
 DEPENDENCIES := $(OBJECTS:.o=.d)
@@ -46,8 +47,13 @@ info:
 	@echo "[*] Application dir: ${APP_DIR}     "
 	@echo "[*] Object dir:      ${OBJ_DIR}     "
 	@echo "[*] Sources:         ${SRC}         "
+	@echo "[*] Tests:           ${TEST_SRC}    "
 	@echo "[*] Objects:         ${OBJECTS}     "
 	@echo "[*] Dependencies:    ${DEPENDENCIES}"
 
 run:
 	@$(APP_DIR)/$(TARGET)
+
+test: $(TEST_SRC) $(SRC)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/test $(TEST_SRC) $(LDFLAGS)
+	@$(APP_DIR)/test

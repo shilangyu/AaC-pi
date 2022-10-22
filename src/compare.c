@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX(a, b) (((a) < (b)) ? (b) : (a))
 #define COMPARE_BUFFER_SIZE 1024 * 1024
 typedef uint64_t compare_size_t;
 

@@ -1,7 +1,8 @@
 #include "find.h"
+#include <stdlib.h>
 
 int handle_find(command_find_t args) {
   // TODO
 
-  return 0;
+  return EXIT_SUCCESS;
 }

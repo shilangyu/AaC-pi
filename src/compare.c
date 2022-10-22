@@ -1,4 +1,5 @@
 #include "compare.h"
+#include "main.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdio_ext.h>
@@ -29,7 +30,9 @@ int64_t compare(const char *file_name1, const char *file_name2) {
   uint64_t *buff_2_64 = (uint64_t *)buff_2;
 
   FILE *file_1 = fopen(file_name1, "r");
+  if (file_1 == NULL) ERR(file_name1);
   FILE *file_2 = fopen(file_name2, "r");
+  if (file_2 == NULL) ERR(file_name2);
 
   for (uint64_t iter = 0; result == -1; iter++) {
     size_t read_1 = fread(buff_1, 1, COMPARE_BUFFER_SIZE, file_1);
@@ -59,8 +62,8 @@ int64_t compare(const char *file_name1, const char *file_name2) {
       break;
   }
 
-  fclose(file_1);
-  fclose(file_2);
+  CHECK(fclose(file_1));
+  CHECK(fclose(file_2));
 
   return result;
 }

@@ -15,11 +15,11 @@ const char *get_command_name(command_type_t type) {
 }
 
 __attribute__((noreturn)) void print_help_and_exit(const char *program_name) {
-  printf("%s: π generator, substring finder, and solution comparator.\n", program_name);
-  printf("Available commands:\n");
-  printf("\t%s %s [file]: generates digits of π into the specified file\n", program_name, get_command_name(GENERATE));
-  printf("\t%s %s [file] [substring]: finds the given substring in the given file and prints the starting index\n", program_name, get_command_name(FIND));
-  printf("\t%s %s [file1] [file2]: compares contents of two files and points to (if there is one) a difference\n", program_name, get_command_name(COMPARE));
+  fprintf(stderr, "%s: π generator, substring finder, and solution comparator.\n", program_name);
+  fprintf(stderr, "Available commands:\n");
+  fprintf(stderr, "\t%s %s [file]: generates digits of π into the specified file\n", program_name, get_command_name(GENERATE));
+  fprintf(stderr, "\t%s %s [file] [substring]: finds the given substring in the given file and prints the starting index\n", program_name, get_command_name(FIND));
+  fprintf(stderr, "\t%s %s [file1] [file2]: compares contents of two files and points to (if there is one) a difference\n", program_name, get_command_name(COMPARE));
 
   exit(1);
 }

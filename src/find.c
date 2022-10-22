@@ -1,9 +1,13 @@
 #include "find.h"
 #include "main.h"
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 // Knuth-Morris-Pratt pattern search algorithm
 //  -1: substring not found
@@ -29,42 +33,44 @@ int64_t kmp(const char *file_path, const char *substring) {
     }
   }
 
-  // run KMP against the file
+  // run KMP against the file by memory mapping the whole file
 
-  const size_t buf_size = 1024 * 1024;
-  uint8_t buf[buf_size];
+  int fd = open(file_path, O_RDONLY);
+  if (fd == -1) ERR(file_path);
 
-  FILE *file = fopen(file_path, "r");
-  if (file == NULL) ERR(file_path);
-
-  size_t p = 0;
-  for (size_t iter = 0;; iter++) {
-    size_t read = fread(buf, 1, buf_size, file);
-
-    size_t i = 0;
-    while (i < read) {
-      if (substring[p] == buf[i]) {
-        i += 1;
-        p += 1;
-      }
-
-      if (p == sub_len) {
-        return iter * buf_size + i - sub_len;
-      } else if (i < read && substring[p] != buf[i]) {
-        if (p == 0) {
-          i += 1;
-        } else {
-          p = lps[p - 1];
-        }
-      }
-    }
-
-    // break if EOF
-    if (read < buf_size)
-      break;
+  struct stat stats;
+  if (fstat(fd, &stats) == -1) {
+    CHECK(close(fd));
+    ERR("fstat");
   }
 
-  CHECK(fclose(file));
+  uint8_t *data = mmap(NULL, stats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+  if (data == MAP_FAILED) {
+    CHECK(close(fd));
+    ERR("mmap");
+  }
+
+  size_t p = 0;
+  off_t i  = 0;
+  while (i < stats.st_size) {
+    if (substring[p] == data[i]) {
+      i += 1;
+      p += 1;
+    }
+
+    if (p == sub_len) {
+      return i - sub_len;
+    } else if (i < stats.st_size && substring[p] != data[i]) {
+      if (p == 0) {
+        i += 1;
+      } else {
+        p = lps[p - 1];
+      }
+    }
+  }
+
+  CHECK(munmap(data, stats.st_size));
+  CHECK(close(fd));
 
   return -1;
 }

@@ -1,5 +1,6 @@
 #include "generate.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int handle_generate(command_generate_t args) {
   // TODO
@@ -12,5 +13,5 @@ int handle_generate(command_generate_t args) {
     for (b = c; d += f[b] * a, f[b] = d % --g, d /= g--, --b; d *= b)
       ;
 
-  return 0;
+  return EXIT_SUCCESS;
 }

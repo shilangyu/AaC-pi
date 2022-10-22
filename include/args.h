@@ -1,4 +1,5 @@
 #include <stddef.h>
+#pragma once
 
 typedef enum {
   GENERATE,
@@ -20,7 +21,7 @@ typedef struct {
   const char *pi_file_path;
 } command_find_t;
 
-/// Tagged union of possible CLI commands
+// Tagged union of possible CLI commands
 typedef struct {
   const command_type_t tag;
   const union args_value_t {
@@ -30,6 +31,6 @@ typedef struct {
   } value;
 } args_t;
 
-/// Parses command line arguments into a resolved command.
-/// If arguments are wrong, prints help and exits the program.
+// Parses command line arguments into a resolved command.
+// If arguments are wrong, prints help and exits the program.
 args_t parse_args(const char **argv, const size_t argc);

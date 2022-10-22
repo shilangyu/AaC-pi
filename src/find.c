@@ -29,7 +29,42 @@ int64_t kmp(const char *file_path, const char *substring) {
     }
   }
 
-  // TODO: run kmp on the file
+  // run KMP against the file
+
+  const size_t buf_size = 1024 * 1024;
+  uint8_t buf[buf_size];
+
+  FILE *file = fopen(file_path, "r");
+  if (file == NULL) ERR(file_path);
+
+  size_t p = 0;
+  for (size_t iter = 0;; iter++) {
+    size_t read = fread(buf, 1, buf_size, file);
+
+    size_t i = 0;
+    while (i < read) {
+      if (substring[p] == buf[i]) {
+        i += 1;
+        p += 1;
+      }
+
+      if (p == sub_len) {
+        return iter * buf_size + i - sub_len;
+      } else if (i < read && substring[p] != buf[i]) {
+        if (p == 0) {
+          i += 1;
+        } else {
+          p = lps[p - 1];
+        }
+      }
+    }
+
+    // break if EOF
+    if (read < buf_size)
+      break;
+  }
+
+  CHECK(fclose(file));
 
   return -1;
 }
@@ -68,7 +103,7 @@ int handle_find(command_find_t args) {
     return EXIT_SUCCESS;
   }
 
-  printf("Found substring in the given files at position %ld:\n", offset);
+  printf("Found substring in the given file at position %ld:\n", offset);
   print_sub(args.pi_file_path, offset, strlen(args.substring));
 
   return EXIT_SUCCESS;

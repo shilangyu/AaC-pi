@@ -19,6 +19,6 @@ int main(const int argc, const char **argv) {
     return handle_compare(args.value.compare);
   }
 
-  printf("Unhandled command\n");
+  fprintf(stderr, "Unhandled command\n");
   return 1;
 }

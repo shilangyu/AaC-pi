@@ -41,6 +41,9 @@ args_t parse_args(const char **argv, const size_t argc) {
 
     command_type = FIND;
     value.find   = (command_find_t){.pi_file_path = argv[2], .substring = argv[3]};
+    if (strlen(value.find.substring) == 0) {
+      print_help_and_exit(argv[0]);
+    }
   } else if (!strcmp(get_command_name(COMPARE), cmd)) {
     if (argc != 4) print_help_and_exit(argv[0]);
 

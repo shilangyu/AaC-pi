@@ -2,10 +2,8 @@
 #include "compare.h"
 #include "find.h"
 #include "generate.h"
-#include <stdint.h>
-#include <stdio_ext.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
 
 int main(const int argc, const char **argv) {
   args_t args = parse_args(argv, argc);

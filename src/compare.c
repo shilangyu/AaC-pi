@@ -109,7 +109,7 @@ int handle_compare(command_compare_t args) {
     return EXIT_FAILURE;
   }
 
-  printf("Given files differ at position %ld:\n", diff);
+  printf("Given files differ at position %lld:\n", diff);
   print_diff(args.file_path1, diff);
   print_diff(args.file_path2, diff);
 

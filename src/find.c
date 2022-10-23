@@ -109,7 +109,7 @@ int handle_find(command_find_t args) {
     return EXIT_SUCCESS;
   }
 
-  printf("Found substring in the given file at position %ld:\n", offset);
+  printf("Found substring in the given file at position %lld:\n", offset);
   print_sub(args.pi_file_path, offset, strlen(args.substring));
 
   return EXIT_SUCCESS;

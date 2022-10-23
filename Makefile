@@ -27,7 +27,7 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 
 -include $(DEPENDENCIES)
 
-.PHONY: all build clean debug release info
+.PHONY: all build clean debug release info doc
 
 build:
 	@mkdir -p $(APP_DIR)
@@ -57,3 +57,6 @@ run:
 test: $(TEST_SRC) $(SRC)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/test $(TEST_SRC) $(LDFLAGS)
 	@$(APP_DIR)/test
+
+doc:
+	pandoc doc/documentation.md -o $(BUILD)/documentation.pdf

@@ -7,7 +7,7 @@
 #include <string.h>
 
 #define COMPARE_BUFFER_SIZE 1024 * 1024
-typedef uint64_t compare_size_t;
+typedef size_t compare_size_t;
 
 void zero_rest(uint8_t *buff, size_t read) {
   int read_delta = COMPARE_BUFFER_SIZE - read;

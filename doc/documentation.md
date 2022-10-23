@@ -7,7 +7,7 @@ author:
 published: true
 date: October, 2022
 urlcolor: cyan
-# geometry: margin=2cm
+geometry: margin=3.5cm
 ---
 
 <!-- documentation of algorithms, including algorithms pseudocode, exhaustive description, and analysis of their complexity -->
@@ -40,11 +40,11 @@ Available commands:
 
 ## Generate
 
-<!-- TODO -->
+TODO
 
 ## Find
 
-<!-- TODO -->
+TODO
 
 ## Compare
 

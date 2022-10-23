@@ -10,3 +10,5 @@
   do {                               \
     if ((source) != 0) ERR(#source); \
   } while (0)
+
+#define MAX(a, b) (((a) < (b)) ? (b) : (a))

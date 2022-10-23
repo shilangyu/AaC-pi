@@ -59,4 +59,4 @@ test: $(TEST_SRC) $(SRC)
 	@$(APP_DIR)/test
 
 doc:
-	pandoc doc/documentation.md -o $(BUILD)/documentation.pdf
+	pandoc doc/documentation.md -o $(BUILD)/documentation.pdf --resource-path doc

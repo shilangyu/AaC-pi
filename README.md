@@ -6,7 +6,7 @@ Repository for the $\pi$ generation project for the Algorithms and Computability
 
 Download the source and build the tool with `make release`. You will find the executable at `build/apps/pi`. Depends on a C compiler (setup for `clang`, but can be replaced with `gcc`).
 
-To build documentation you will need to install [`pandoc`](https://pandoc.org/) and then run `make docs`. You will find the generated pdf at `build/documentation.pdf`.
+To build documentation you will need to install [`pandoc`](https://pandoc.org/) and then run `make doc`. You will find the generated pdf at `build/documentation.pdf`.
 
 ## Usage
 

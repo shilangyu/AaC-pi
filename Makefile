@@ -5,6 +5,7 @@ SRC_EXT  := c
 CXXFLAGS := -pedantic-errors -Wall -Wextra
 LDFLAGS  := 
 BUILD    := ./build
+DOC_DIR  := ./doc
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 TARGET   := pi
@@ -59,4 +60,4 @@ test: $(TEST_SRC) $(SRC)
 	@$(APP_DIR)/test
 
 doc:
-	pandoc doc/documentation.md -o $(BUILD)/documentation.pdf --resource-path doc
+	pandoc $(DOC_DIR)/documentation.md -o $(BUILD)/documentation.pdf --resource-path $(DOC_DIR)

@@ -9,8 +9,8 @@ OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 TARGET   := pi
 INCLUDE  := -Iinclude/
-SRC      := $(shell find src/  -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
-TEST_SRC := $(shell find src/ test/ -not -path src/main.c -a -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+SRC      := $(shell find src -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+TEST_SRC := $(shell find src test -not -path src/main.c -a -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
 
 OBJECTS      := $(SRC:%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
 DEPENDENCIES := $(OBJECTS:.o=.d)

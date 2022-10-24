@@ -1,6 +1,7 @@
 #include "find.h"
 #include "main.h"
 #include <fcntl.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,7 +110,7 @@ int handle_find(command_find_t args) {
     return EXIT_SUCCESS;
   }
 
-  printf("Found substring in the given file at position %lld:\n", offset);
+  printf("Found substring in the given file at position %" PRId64 ":\n", offset);
   print_sub(args.pi_file_path, offset, strlen(args.substring));
 
   return EXIT_SUCCESS;

@@ -1,6 +1,7 @@
 #include "compare.h"
 #include "main.h"
 #include <assert.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,7 +110,7 @@ int handle_compare(command_compare_t args) {
     return EXIT_FAILURE;
   }
 
-  printf("Given files differ at position %lld:\n", diff);
+  printf("Given files differ at position %" PRId64 ":\n", diff);
   print_diff(args.file_path1, diff);
   print_diff(args.file_path2, diff);
 

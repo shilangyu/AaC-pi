@@ -2,8 +2,8 @@
 title: $\pi$ project
 subtitle: Algorithms & Computability course at the MiNI faculty
 author:
-  - Kamil Monicz (123456)
-  - Marcin Wojnarowski (303880)
+  - Kamil Monicz
+  - Marcin Wojnarowski
 published: true
 date: October, 2022
 urlcolor: cyan
@@ -107,7 +107,7 @@ Construction of this LPS array can be done in $\mathcal O(m)$. Now that we have 
 2. We keep matching the string and pattern while incrementing both pointers
 3. If we reach the end of the pattern, we have found the substring and we can exit
 4. If we find a mismatch we do not increment the pointers. Instead, we reinitialize $j$ to a new value: $LPS[j-1]$. This is due to the following observation: we know that the previous $j$ characters of the pattern did match the string, additionally we know that $LPS[j-1]$ is the count of characters of the pattern which are both the prefix and the suffix, therefore we do not need to match the first $LPS[j-1]$ characters because we already know they will match.
-   1. Edge case when we find a mismatch at $j = 0$: we just increment $i$ by one
+   1. Edge case when we find a mismatch at $j = 0$: we just increment $i$ by one instead
 
 The complexity of this solution is: time $\mathcal O(n + m)$ and space $\mathcal O(m)$ (LPS array). The time complexity can be obtained by the following reasoning:
 

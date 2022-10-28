@@ -60,4 +60,4 @@ test: $(TEST_SRC) $(SRC)
 	@$(APP_DIR)/test
 
 doc:
-	pandoc $(DOC_DIR)/documentation.md -o $(BUILD)/documentation.pdf --resource-path $(DOC_DIR)
+	pandoc $(DOC_DIR)/documentation.md -o $(BUILD)/documentation.pdf --resource-path $(DOC_DIR) --citeproc

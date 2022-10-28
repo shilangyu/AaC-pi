@@ -8,6 +8,7 @@ published: true
 date: October, 2022
 urlcolor: cyan
 geometry: margin=3.5cm
+bibliography: doc/bibliography.bib
 ---
 
 <!-- documentation of algorithms, including algorithms pseudocode, exhaustive description, and analysis of their complexity -->
@@ -40,11 +41,56 @@ Available commands:
 
 ## Generate
 
-TODO
+The task of finding consecutive digits of PI has been bugging humanity for thousands of years. Recently with the rise of automated computing the amount of digits we know has skyrocketed. The last 9 world records have all used the Chudnovsky algorithm which is a hypergeometric series which quickly converge to the digits of $\pi$. The current world record stands at $10^{14}$ decimal places, and the algorithm is the following [@ycrunch]:
+
+$$
+  \frac{1}{\pi} = 12 \sum^\infty_{n=0} \frac{(-1)^n (6n)! (545140134n + 13591409)}{(3n)!(n!)^3 \left(640320\right)^{3n + \frac32}}
+$$
+
+We will use this algorithm as well. To be usable, it has to be simplified and adjusted for iterative computation. The factorial that appears in the computation should preferably be eliminated since it is expensive to compute. The following simplified form will be used (which is the decomposition of the original formula):
+
+$$
+  \pi = C \left(\sum^\infty_{n=0} \frac{M_n \cdot L_n}{X_n}\right)^{-1}
+$$
+
+where
+
+$$
+\begin{aligned}
+  C &= 426880 \sqrt{10005} \\
+  M_n &= \frac{(6n)!}{(3n)! (n!)^3} \\
+  L_n &= 545140134n + 13591409 \\
+  X_n &= (-262537412640768000)^n  \\
+\end{aligned}
+$$
+
+The iterative difference can be calculated. First we find the zero terms:
+
+$$
+\begin{aligned}
+  M_0 &= \frac{(0)!}{(0)! (0!)^3} = 1 \\
+  L_0 &= 545140134 \cdot 0 + 13591409 = 13591409 \\
+  X_0 &= (-262537412640768000)^0 = 1  \\
+\end{aligned}
+$$
+
+Then finally find the value of the next term relative to the previous one.
+
+$$
+\begin{aligned}
+  M_{n+1} &= M_n \cdot \left( \frac{(12n+2)(12n+6)(12n+10)}{(n+1)^3} \right) \\
+  L_{n+1} &= L_n + 545140134 \\
+  X_{n+1} &= X_n \cdot (-262537412640768000) \\
+\end{aligned}
+$$
+
+Computation will operate on large decimal numbers, which means there will be a need to store arbitrary precision numbers in a custom data structure. The amount of memory available is limited (only 8 to 16 GB) which means the limiting factor for this task will be the memory, not time itself. We believe we can fill the whole memory with computed digits in a matter of minutes. An optimization to memory can be performed by the means of swapping with a persistent storage (for instance a hard disk). But such an implementation would require considerably more time to implement, and thus we will not do it.
+
+The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while the memory complexity is simply $\mathcal O(n)$.
 
 ## Find
 
-TODO
+The task of finding a substring is on the easier side and has many
 
 ## Compare
 
@@ -63,3 +109,5 @@ Once a mismatch is found, the composed word is broken down into individual bytes
 If we reach the end of one of the files, the program is stopped and the current offset is returned.
 
 To sum up: $m + n$ reads are done and $\frac{\min(m, n)}{\text{CPU word size}}$ comparisons are done which means the algorithm time complexity is $\mathcal O(m + n + \frac{\min(m, n)}{\text{CPU word size}}) = \mathcal O(\min(m, n))$, linear.
+
+# References

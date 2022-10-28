@@ -47,7 +47,11 @@ $$
   \frac{1}{\pi} = 12 \sum^\infty_{n=0} \frac{(-1)^n (6n)! (545140134n + 13591409)}{(3n)!(n!)^3 \left(640320\right)^{3n + \frac32}}
 $$
 
-We will use this algorithm as well. To be usable, it has to be simplified and adjusted for iterative computation. The factorial that appears in the computation should preferably be eliminated since it is expensive to compute. The following simplified form will be used (which is the decomposition of the original formula):
+We will use this algorithm as well.
+
+### Algorithm description
+
+To be usable, it has to be simplified and adjusted for iterative computation. The factorial that appears in the computation should preferably be eliminated since it is expensive to compute. The following simplified form will be used (which is the decomposition of the original formula):
 
 $$
   \pi = C \left(\sum^\infty_{n=0} \frac{M_n \cdot L_n}{X_n}\right)^{-1}
@@ -91,6 +95,8 @@ The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while th
 ## Find
 
 The task of finding a substring is often solved by a family of algorithms called string-searching algorithm. The simplest algorithm is the naive one, where each character in the pattern is checked one by one against the string and on a mismatch we move the string pointer by one and start again. This however is of complexity $\mathcal O(mn)$ where $m$ is the length of the pattern and $n$ is the length of the string. An improvement over the naive algorithm is the Knuth-Morris-Pratt and it is the following [@doi:10.1137/0206024]:
+
+### Algorithm description
 
 First we introduce a preprocessing step. We construct a longest prefix suffix (LPS) array of size $m$. This array will later allow to skip pattern characters when searching. The $i$-th element of the LPS array is length of the longest prefix of the substring of the pattern from the start up to $i$-th character while also being its suffix. For instance, consider the following $\pi$ pattern: 434543524. We can construct its LPS:
 

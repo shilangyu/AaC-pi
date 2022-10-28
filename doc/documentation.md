@@ -86,11 +86,38 @@ $$
 
 Computation will operate on large decimal numbers, which means there will be a need to store arbitrary precision numbers in a custom data structure. The amount of memory available is limited (only 8 to 16 GB) which means the limiting factor for this task will be the memory, not time itself. We believe we can fill the whole memory with computed digits in a matter of minutes. An optimization to memory can be performed by the means of swapping with a persistent storage (for instance a hard disk). But such an implementation would require considerably more time to implement, and thus we will not do it.
 
-The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while the memory complexity is simply $\mathcal O(n)$.
+The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while the space complexity is simply $\mathcal O(n)$.
 
 ## Find
 
-The task of finding a substring is on the easier side and has many
+The task of finding a substring is often solved by a family of algorithms called string-searching algorithm. The simplest algorithm is the naive one, where each character in the pattern is checked one by one against the string and on a mismatch we move the string pointer by one and start again. This however is of complexity $\mathcal O(mn)$ where $m$ is the length of the pattern and $n$ is the length of the string. An improvement over the naive algorithm is the Knuth-Morris-Pratt and it is the following [@doi:10.1137/0206024]:
+
+First we introduce a preprocessing step. We construct a longest prefix suffix (LPS) array of size $m$. This array will later allow to skip pattern characters when searching. The $i$-th element of the LPS array is length of the longest prefix of the substring of the pattern from the start up to $i$-th character while also being its suffix. For instance, consider the following $\pi$ pattern: 434543524. We can construct its LPS:
+
+| 4   | 3   | 4   | 5   | 4   | 3   | 5   | 2   | 4   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0   | 0   | 1   | 0   | 1   | 2   | 0   | 0   | 1   |
+
+- When $i = 2$ (zero-indexed) the pattern substring is "434" so the value of LPS is $1$, because "4" is both a prefix and a suffix
+- When $i = 5$ (zero-indexed) the pattern substring is "434543" so the value of LPS is $2$, because "43" is both a prefix and a suffix
+
+Construction of this LPS array can be done in $\mathcal O(m)$. Now that we have this array we can move onto searching. The array allows us to skip characters upon a mismatch without a need of restarting the string pointer.
+
+1. We keep track of two pointers, one for the string ($i$) and one for the pattern ($j$)
+2. We keep matching the string and pattern while incrementing both pointers
+3. If we reach the end of the pattern, we have found the substring and we can exit
+4. If we find a mismatch we do not increment the pointers. Instead, we reinitialize $j$ to a new value: $LPS[j-1]$. This is due to the following observation: we know that the previous $j$ characters of the pattern did match the string, additionally we know that $LPS[j-1]$ is the count of characters of the pattern which are both the prefix and the suffix, therefore we do not need to match the first $LPS[j-1]$ characters because we already know they will match.
+   1. Edge case when we find a mismatch at $j = 0$: we just increment $i$ by one
+
+The complexity of this solution is: time $\mathcal O(n + m)$ and space $\mathcal O(m)$ (LPS array). The time complexity can be obtained by the following reasoning:
+
+- The LPS is constructed in $\mathcal O(m)$ operations
+- The loop performs constant operations
+- The loop always increments the $i$ pointer where $i \in [0; n] \subset \mathbb N$, except when there is a mismatch and $j \ne 0$
+- When the above case happens, notice that the amount of times we are mismatching is in the worst case directly proportional to the amount of correct matches (where $i$ is incremented), so the total amount of operations is at most $2n$. If we matched $k$ characters, we advanced the pattern index by $k$ and thus we can reduce it only by at most $k$ (since $j > LPS[j-1]$)
+- The loop stops when $i = n$
+
+Thus $\mathcal O(m + 2n + C) = \mathcal O(n + m)$
 
 ## Compare
 

@@ -10,7 +10,7 @@ int handle_generate(command_generate_t args) {
   FILE *file = fopen(args.pi_file_path, "w");
   if (file == NULL) ERR(args.pi_file_path);
 
-  chudnovsky(file, 100000);
+  chudnovsky(file, args.n_digits);
 
   CHECK(fclose(file));
 

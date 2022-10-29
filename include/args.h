@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdint.h>
 #pragma once
 
 typedef enum {
@@ -9,6 +10,7 @@ typedef enum {
 
 typedef struct {
   const char *pi_file_path;
+  uint64_t n_digits;
 } command_generate_t;
 
 typedef struct {

@@ -1,17 +1,37 @@
 #include "generate.h"
+#include "chudnovsky.h"
+#include "main.h"
+#include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int handle_generate(command_generate_t args) {
-  // TODO
-  // prints first 800 digits of pi,
-  // source: https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
-  int a = 10000, b = 0, c = 2800, d, e, f[2801], g;
-  for (; b - c;)
-    f[b++] = a / 5;
-  for (; d = 0, (g = c * 2); c -= 14, printf("%.4d", e + d / a), e = d % a)
-    for (b = c; d += f[b] * a, f[b] = d % --g, d /= g--, --b; d *= b)
-      ;
+  FILE *file = fopen(args.pi_file_path, "w");
+  if (file == NULL) ERR(args.pi_file_path);
+
+  chudnovsky(file, 100000);
+
+  CHECK(fclose(file));
 
   return EXIT_SUCCESS;
+}
+
+// Quadratic convergence, but expensive
+double gauss_legendre() {
+  double a = 1.0;
+  double b = 1.0 / sqrt(2);
+  double t = 1.0 / 4.0;
+  double p = 1.0;
+
+  for (size_t i = 0; i < 3; i++) {
+    double ak = (a + b) / 2.0;
+
+    b = sqrt(a * b);
+    t = t - p * (a - ak) * (a - ak);
+    p = 2 * p;
+    a = ak;
+  }
+
+  return (a + b) * (a + b) / (4 * t);
 }

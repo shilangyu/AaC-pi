@@ -20,7 +20,9 @@ void chudnovsky_bs(uint64_t a, uint64_t b,
       mpz_set_ui(p_stack[stack_pointer], 6 * a - 5);
       mpz_mul_ui(p_stack[stack_pointer], p_stack[stack_pointer], 2 * a - 1);
       mpz_mul_ui(p_stack[stack_pointer], p_stack[stack_pointer], 6 * a - 1);
-      mpz_mul_ui(q_stack[stack_pointer], a_factor, a * a * a);
+      mpz_mul_ui(q_stack[stack_pointer], a_factor, a);
+      mpz_mul_ui(q_stack[stack_pointer], q_stack[stack_pointer], a);
+      mpz_mul_ui(q_stack[stack_pointer], q_stack[stack_pointer], a);
     }
 
     mpz_set_ui(t_stack[stack_pointer], a);

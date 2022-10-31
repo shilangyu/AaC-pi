@@ -2,3 +2,5 @@ pi-billion.txt
 build/
 pi
 .vscode/
+
+out.txt

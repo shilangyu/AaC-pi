@@ -98,6 +98,8 @@ void print_diff(const char *file_path, int64_t diff) {
     printf("%c", buf[i]);
 
   printf("…\n");
+
+  CHECK(fclose(file));
 }
 
 int handle_compare(command_compare_t args) {

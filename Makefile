@@ -3,7 +3,7 @@
 CXX      := clang
 SRC_EXT  := c
 CXXFLAGS := -pedantic-errors -Wall -Wextra
-LDFLAGS  := 
+LDFLAGS  := -lm -lgmp
 BUILD    := ./build
 DOC_DIR  := ./doc
 OBJ_DIR  := $(BUILD)/objects

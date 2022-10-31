@@ -100,6 +100,8 @@ void print_sub(const char *file_path, int64_t offset, size_t length) {
   for (size_t i = offset - move + length; i < read; i++)
     printf("%c", buf[i]);
   printf("…\n");
+
+  CHECK(fclose(file));
 }
 
 int handle_find(command_find_t args) {

@@ -91,9 +91,8 @@ class mpz:
         result = mpz(
             size=
             self._size  # enough to fit original data
-            - 1  # the result.size is initially 1
             + other._size - 1  # maximum shift (due to multiplication)
-            + 1  # last group overflow (due to addition)
+            + 1  # last group may overflow (due to addition)
         )
 
         #  0  1  2  2  2  2 : other_range_max

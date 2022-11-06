@@ -4,7 +4,7 @@ Repository for the $\pi$ generation project for the Algorithms and Computability
 
 ## Building
 
-Download the source and build the tool with `make release`. You will find the executable at `build/apps/pi`. Depends on a C compiler (setup for `clang`, but can be replaced with `gcc`).
+Download the source and build the tool with `make release`. You will find the executable at `build/apps/pi`. Depends on a C compiler (setup for `clang`, but can be replaced with `gcc`) and the [`gmp`](https://gmplib.org) library (on MacOS, download `gmp` from brew: `brew install gmp`).
 
 To build documentation you will need to install [`pandoc`](https://pandoc.org/) and then run `make doc`. You will find the generated pdf at `build/documentation.pdf`.
 

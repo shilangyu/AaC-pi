@@ -16,6 +16,15 @@ TEST_SRC := $(shell find src test -not -path src/main.c -a -name '*.$(SRC_EXT)' 
 OBJECTS      := $(SRC:%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
 DEPENDENCIES := $(OBJECTS:.o=.d)
 
+ifeq ($(OS),Windows_NT)
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Darwin)
+		LDFLAGS += -L$(shell brew --prefix gmp)/lib
+		INCLUDE += -I$(shell brew --prefix gmp)/include
+	endif
+endif
+
 all: build $(APP_DIR)/$(TARGET)
 
 $(OBJ_DIR)/%.o: %.$(SRC_EXT)

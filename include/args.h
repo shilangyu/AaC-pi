@@ -6,6 +6,7 @@ typedef enum {
   GENERATE,
   COMPARE,
   FIND,
+  TABLE,
 } command_type_t;
 
 typedef struct {
@@ -23,6 +24,12 @@ typedef struct {
   const char *pi_file_path;
 } command_find_t;
 
+typedef struct {
+  const char *pi_file_path;
+  const char *out_file_path;
+  uint64_t n;
+} command_table_t;
+
 // Tagged union of possible CLI commands
 typedef struct {
   const command_type_t tag;
@@ -30,6 +37,7 @@ typedef struct {
     command_generate_t generate;
     command_compare_t compare;
     command_find_t find;
+    command_table_t table;
   } value;
 } args_t;
 

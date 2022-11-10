@@ -1,4 +1,5 @@
 #include "args.h"
+#include "table.h"
 #include "compare.h"
 #include "find.h"
 #include "generate.h"
@@ -15,6 +16,8 @@ int main(const int argc, const char **argv) {
     return handle_find(args.value.find);
   case COMPARE:
     return handle_compare(args.value.compare);
+  case TABLE:
+    return handle_table(args.value.table);
   }
 
   fprintf(stderr, "Unhandled command\n");

@@ -55,8 +55,8 @@ args_t parse_args(const char **argv, const size_t argc) {
   } else if (!strcmp(get_command_name(TABLE), cmd)) {
     if (argc != 5) print_help_and_exit(argv[0]);
 
-    command_type  = TABLE;
-    value.table = (command_table_t){.pi_file_path = argv[2], .out_file_path = argv[3], .n = strtoul(argv[4], 0, 0)};
+    command_type = TABLE;
+    value.table  = (command_table_t){.pi_file_path = argv[2], .out_file_path = argv[3], .n = strtoul(argv[4], 0, 0)};
   } else {
     print_help_and_exit(argv[0]);
   }

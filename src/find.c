@@ -2,6 +2,7 @@
 #include "main.h"
 #include <fcntl.h>
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +38,7 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
   // run KMP against the data
 
   size_t p = 0;
-  size_t i  = 0;
+  size_t i = 0;
   while (i < data_len) {
     if (substring[p] == data[i]) {
       i += 1;
@@ -52,6 +53,26 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
       } else {
         p = lps[p - 1];
       }
+    }
+  }
+
+  return -1;
+}
+
+int64_t naive(const uint8_t *data, const size_t data_len, const char *substring) {
+  const size_t sub_len = strlen(substring);
+
+  for (size_t i = 0; i < data_len - sub_len; i++) {
+    bool found = true;
+    for (size_t j = 0; j < sub_len; j++) {
+      if (data[i + j] != substring[j]) {
+        found = false;
+        break;
+      }
+    }
+
+    if (found) {
+      return i;
     }
   }
 
@@ -102,7 +123,6 @@ int handle_find(command_find_t args) {
     CHECK(close(fd));
     ERR("mmap");
   }
-
 
   int64_t offset = kmp(data, stats.st_size, args.substring);
 

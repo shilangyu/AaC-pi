@@ -2,6 +2,7 @@
 #include "main.h"
 #include <fcntl.h>
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +14,7 @@
 // Knuth-Morris-Pratt pattern search algorithm
 //  -1: substring not found
 // >-1: index of the start of the found substring
-int64_t kmp(const char *file_path, const char *substring) {
+int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
   const size_t sub_len = strlen(substring);
 
   // create the longest prefix suffix table
@@ -34,26 +35,11 @@ int64_t kmp(const char *file_path, const char *substring) {
     }
   }
 
-  // run KMP against the file by memory mapping the whole file
-
-  int fd = open(file_path, O_RDONLY);
-  if (fd == -1) ERR(file_path);
-
-  struct stat stats;
-  if (fstat(fd, &stats) == -1) {
-    CHECK(close(fd));
-    ERR("fstat");
-  }
-
-  uint8_t *data = mmap(NULL, stats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-  if (data == MAP_FAILED) {
-    CHECK(close(fd));
-    ERR("mmap");
-  }
+  // run KMP against the data
 
   size_t p = 0;
-  off_t i  = 0;
-  while (i < stats.st_size) {
+  size_t i = 0;
+  while (i < data_len) {
     if (substring[p] == data[i]) {
       i += 1;
       p += 1;
@@ -61,7 +47,7 @@ int64_t kmp(const char *file_path, const char *substring) {
 
     if (p == sub_len) {
       return i - sub_len;
-    } else if (i < stats.st_size && substring[p] != data[i]) {
+    } else if (i < data_len && substring[p] != data[i]) {
       if (p == 0) {
         i += 1;
       } else {
@@ -70,8 +56,25 @@ int64_t kmp(const char *file_path, const char *substring) {
     }
   }
 
-  CHECK(munmap(data, stats.st_size));
-  CHECK(close(fd));
+  return -1;
+}
+
+int64_t naive(const uint8_t *data, const size_t data_len, const char *substring) {
+  const size_t sub_len = strlen(substring);
+
+  for (size_t i = 0; i < data_len - sub_len; i++) {
+    bool found = true;
+    for (size_t j = 0; j < sub_len; j++) {
+      if (data[i + j] != substring[j]) {
+        found = false;
+        break;
+      }
+    }
+
+    if (found) {
+      return i;
+    }
+  }
 
   return -1;
 }
@@ -105,15 +108,33 @@ void print_sub(const char *file_path, int64_t offset, size_t length) {
 }
 
 int handle_find(command_find_t args) {
-  int64_t offset = kmp(args.pi_file_path, args.substring);
+  // memory map the whole file
+  int fd = open(args.pi_file_path, O_RDONLY);
+  if (fd == -1) ERR(args.pi_file_path);
+
+  struct stat stats;
+  if (fstat(fd, &stats) == -1) {
+    CHECK(close(fd));
+    ERR("fstat");
+  }
+
+  uint8_t *data = mmap(NULL, stats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+  if (data == MAP_FAILED) {
+    CHECK(close(fd));
+    ERR("mmap");
+  }
+
+  int64_t offset = kmp(data, stats.st_size, args.substring);
 
   if (offset == -1) {
     printf("Substring not found in the pointed file.\n");
-    return EXIT_SUCCESS;
+  } else {
+    printf("Found substring in the given file at position %" PRId64 ":\n", offset);
+    print_sub(args.pi_file_path, offset, strlen(args.substring));
   }
 
-  printf("Found substring in the given file at position %" PRId64 ":\n", offset);
-  print_sub(args.pi_file_path, offset, strlen(args.substring));
+  CHECK(munmap(data, stats.st_size));
+  CHECK(close(fd));
 
   return EXIT_SUCCESS;
 }

@@ -26,7 +26,7 @@ jobs:
           mkdir out
           echo '<a href="./documentation.pdf">documentation</a>' > out/index.html
           make doc
-          mv build/documentation.pdf out
+          # mv build/documentation.pdf out
 
       - name: Deploy pdf to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5

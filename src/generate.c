@@ -6,17 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int handle_generate(command_generate_t args) {
-  FILE *file = fopen(args.pi_file_path, "w");
-  if (file == NULL) ERR(args.pi_file_path);
-
-  chudnovsky(file, args.n_digits);
-
-  CHECK(fclose(file));
-
-  return EXIT_SUCCESS;
-}
-
 // Quadratic convergence, but expensive
 double gauss_legendre() {
   double a = 1.0;
@@ -34,4 +23,16 @@ double gauss_legendre() {
   }
 
   return (a + b) * (a + b) / (4 * t);
+}
+
+int handle_generate(command_generate_t args) {
+  FILE *file = fopen(args.pi_file_path, "w");
+  if (file == NULL)
+    ERR(args.pi_file_path);
+
+  chudnovsky(file, args.n_digits);
+
+  CHECK(fclose(file));
+
+  return EXIT_SUCCESS;
 }

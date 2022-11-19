@@ -5,7 +5,7 @@ author:
   - Kamil Monicz
   - Marcin Wojnarowski
 published: true
-date: October, 2022
+date: November, 2022
 urlcolor: cyan
 geometry: margin=3.5cm
 bibliography: doc/bibliography.bib

@@ -9,9 +9,8 @@ date: October, 2022
 urlcolor: cyan
 geometry: margin=3.5cm
 bibliography: doc/bibliography.bib
+link-citations: true
 ---
-
-<!-- documentation of algorithms, including algorithms pseudocode, exhaustive description, and analysis of their complexity -->
 
 \tableofcontents
 
@@ -32,9 +31,10 @@ Our solution consists of a single program written in C which exposes required fu
 ```
 ./pi: pi generator, substring finder, and solution comparator.
 Available commands:
-        ./pi generate [file]: generates digits of pi into the specified file
+        ./pi generate [file] [n-digits]: generates #n-digits digits of pi into the specified file
         ./pi find [file] [substring]: finds the given substring in the given file and prints the starting index
         ./pi compare [file1] [file2]: compares contents of two files and points to (if there is one) a difference
+        ./pi table [pi_file] [out_file] [n]: writes a table of substrings of natural numbers up to n to out_file from the pi_file
 ```
 
 \normalsize
@@ -88,9 +88,11 @@ $$
 \end{aligned}
 $$
 
+To speed up calculations we applied the technique of binary splitting described both in [@binsplit] and [@ycrunch]. In short, it reformulates a formula of a sum of divisions (which what the Chudnovsky formula is) into a single division of two large operands (sum of fractions becomes a single fraction). Division is expensive, thus this technique is practically much more efficient. Binary splitting also allows for simple parallelization and checkpointing. A more extensive analysis of the Chudnovsky formula can be found in [@chudnovskyanal].
+
 Computation will operate on large decimal numbers, which means there will be a need to store arbitrary precision numbers in a custom data structure. The amount of memory available is limited (only 8 to 16 GB) which means the limiting factor for this task will be the memory, not time itself. We believe we can fill the whole memory with computed digits in a matter of minutes. An optimization to memory can be performed by the means of swapping with a persistent storage (for instance a hard disk). But such an implementation would require considerably more time to implement, and thus we will not do it.
 
-The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while the space complexity is simply $\mathcal O(n)$.
+The time complexity of the algorithm is $\mathcal O(n \cdot \log(n)^3)$ while the space complexity is simply $\mathcal O(n)$ where $n$ is the amount of digits we want to calculate.
 
 ## Find
 
@@ -142,5 +144,37 @@ Once a mismatch is found, the composed word is broken down into individual bytes
 If we reach the end of one of the files, the program is stopped and the current offset is returned.
 
 To sum up: $m + n$ reads are done and $\frac{\min(m, n)}{\text{CPU word size}}$ comparisons are done which means the algorithm time complexity is $\mathcal O(m + n + \frac{\min(m, n)}{\text{CPU word size}}) = \mathcal O(\min(m, n))$, linear.
+
+# Results
+
+## Testing
+
+As baseline a file containing $10^9$ correct digits of $\pi$ was used (<https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt> but with the decimal point removed). Then our program was ran to generate $10^9$ digits (Fig. \ref{fig:generate}). This took roughly 30 minutes. Afterwards a comparison was performed between our generated digits and `pi-billion.txt` (Fig. \ref{fig:compare}). A mistake was found at position $10^9 - 1$ (zero-indexed), thus we successfully generated the requested amount of digits.
+
+![Command used to generate 1 billion digits of $\pi$.\label{fig:generate}](generation.png)
+
+![Command used to compare generated 1 billion digits of $\pi$ with a baseline.\label{fig:compare}](comparison.png)
+
+Afterwards we can perform substring searches on the generated files, for example finding $\pi$ in $\pi$ (Fig. \ref{fig:find}). Finally, we can generate a table containing all substrings formed from consecutive natural numbers until a specified max value (Fig. \ref{fig:table}).
+
+![Command used to find 8 first digits of $\pi$ in $\pi$ itself. The searched string was prefixed by "0" to avoid the obvious match which is the prefix of $\pi$.\label{fig:find}](finding.png)
+
+![Command used to generate a table containing all substrings formed from consecutive natural numbers until 10000 and displaying a part of it.\label{fig:table}](table.png)
+
+In addition, in the `test/` directory one can find unit tests of individual functions to ensure their correctness.
+
+\newpage
+
+## Benchmarks
+
+The final implementation was ran on Linux x64 with an AMD Ryzen 5 3600 @ 3.6GHz CPU to generate $10^n$ digits of $\pi$ for $n \in \{1, 2, 3, 4, 5, 6, 7, 8, 9\}$. All results were checked against `pi-billion.txt`. The obtained results are compared against a state-of-the-art implementation of $\pi$ digits computation: y-cruncher [@ycrunch], which uses the same algorithm but is much more hardware-optimized and has some clever tricks applied.
+
+The time includes memory allocation, computation, and writing the result to a file on disk. As one can see the resulting timings are off by a factor of 2 from a state-of-the-art implementation (Fig. \ref{fig:bench-linear}), showing that the implementation is relatively good for the amount of work put into it. The problem can be observed to scale linearly with respect to input (Fig. \ref{fig:bench-log}). Our implementation seems to handle small values of $n$ better, but this is completely irrelevant: both implementations finish under 10ms. Around $n=10^4$ the overhead of computation overshadows side tasks such as memory allocation and file writing.
+
+![Runtime of our and y-cruncher program for various targets of digits of $\pi$. Log scale for the y-axis.\label{fig:bench-log}](bench-log.png){width=58%}
+
+![Runtime of our and y-cruncher program for various targets of digits of $\pi$. Log scale for the y-axis.\label{fig:bench-linear}](bench-linear.png){width=58%}
+
+The program was written in C and had a requirement of working on Windows. Due to that the program is not multithreaded because of a lack of standard library support from Microsoft. All benchmarks were performed in a single-threaded environment. Another limitation of the implementation is the previously mentioned lack of support for computations exceeding RAM space and lack of distributing capabilities, all of which are available in y-cruncher.
 
 # References

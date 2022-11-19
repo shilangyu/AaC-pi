@@ -1,5 +1,7 @@
 # $\pi$ generation
 
+[![](https://github.com/shilangyu/AaC-pi/workflows/cd/badge.svg)](https://github.com/shilangyu/AaC-pi/actions)
+
 Repository for the $\pi$ generation project for the Algorithms and Computability course at the MiNI faculty.
 
 ## Building

@@ -29,7 +29,7 @@ jobs:
           mv build/documentation.pdf out
 
       - name: Deploy pdf to Github Pages
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
           FOLDER: out

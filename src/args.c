@@ -17,9 +17,9 @@ const char *get_command_name(command_type_t type) {
 }
 
 __attribute__((noreturn)) void print_help_and_exit(const char *program_name) {
-  fprintf(stderr, "%s: π generator, substring finder, and solution comparator.\n", program_name);
+  fprintf(stderr, "%s: pi generator, substring finder, and solution comparator.\n", program_name);
   fprintf(stderr, "Available commands:\n");
-  fprintf(stderr, "\t%s %s [file] [n-digits]: generates #n-digits digits of π into the specified file\n", program_name, get_command_name(GENERATE));
+  fprintf(stderr, "\t%s %s [file] [n-digits]: generates #n-digits digits of pi into the specified file\n", program_name, get_command_name(GENERATE));
   fprintf(stderr, "\t%s %s [file] [substring]: finds the given substring in the given file and prints the starting index\n", program_name, get_command_name(FIND));
   fprintf(stderr, "\t%s %s [file1] [file2]: compares contents of two files and points to (if there is one) a difference\n", program_name, get_command_name(COMPARE));
   fprintf(stderr, "\t%s %s [pi_file] [out_file] [n]: writes a table of substrings of natural numbers up to n to out_file from the pi_file\n", program_name, get_command_name(TABLE));

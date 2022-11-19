@@ -1,5 +1,6 @@
 #include "find.h"
 #include "main.h"
+#include "mmap.h"
 #include <fcntl.h>
 #include <inttypes.h>
 #include <stdbool.h>
@@ -7,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -59,7 +59,9 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
   return -1;
 }
 
-int64_t naive(const uint8_t *data, const size_t data_len, const char *substring) {
+int64_t naive(const uint8_t *data,
+              const size_t data_len,
+              const char *substring) {
   const size_t sub_len = strlen(substring);
 
   for (size_t i = 0; i < data_len - sub_len; i++) {

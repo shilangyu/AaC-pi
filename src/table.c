@@ -13,7 +13,7 @@
 
 void write_result(FILE *out, size_t number, int64_t offset) {
   if (offset == -1) {
-    fprintf(out, "%zu,not found", number);
+    fprintf(out, "%zu,not found\n", number);
   } else {
     fprintf(out, "%zu,%" PRId64 "\n", number, offset);
   }

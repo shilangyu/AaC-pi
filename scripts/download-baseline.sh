@@ -1,3 +1,3 @@
 #!/bin/sh
 
-curl -O --compressed https://files.monicz.pl/aac/pi-billion.txt
+curl -O https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt

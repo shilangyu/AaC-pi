@@ -1,4 +1,5 @@
 #include "find.h"
+#include "io_shim.h"
 #include "main.h"
 #include "mmap.h"
 #include <fcntl.h>
@@ -9,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 // Knuth-Morris-Pratt pattern search algorithm
 //  -1: substring not found
@@ -18,8 +18,8 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
   const size_t sub_len = strlen(substring);
 
   // create the longest prefix suffix table
-  size_t lps[sub_len];
-  lps[0] = 0;
+  size_t *lps = malloc(sub_len * sizeof(size_t));
+  lps[0]      = 0;
 
   {
     size_t p = 0;
@@ -46,6 +46,7 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
     }
 
     if (p == sub_len) {
+      free(lps);
       return i - sub_len;
     } else if (i < data_len && substring[p] != data[i]) {
       if (p == 0) {
@@ -56,6 +57,7 @@ int64_t kmp(const uint8_t *data, const size_t data_len, const char *substring) {
     }
   }
 
+  free(lps);
   return -1;
 }
 
@@ -83,7 +85,7 @@ int64_t naive(const uint8_t *data,
 
 void print_sub(const char *file_path, int64_t offset, size_t length) {
   const size_t window = 20;
-  uint8_t buf[window + length];
+  uint8_t *buf        = malloc((window + length) * sizeof(uint8_t));
 
   FILE *file = fopen(file_path, "r");
   if (file == NULL) ERR(file_path);
@@ -107,6 +109,7 @@ void print_sub(const char *file_path, int64_t offset, size_t length) {
   printf("…\n");
 
   CHECK(fclose(file));
+  free(buf);
 }
 
 int handle_find(command_find_t args) {

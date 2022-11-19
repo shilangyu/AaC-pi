@@ -73,7 +73,7 @@ int64_t compare(const char *file_name1, const char *file_name2) {
 }
 
 void print_diff(const char *file_path, int64_t diff) {
-  const size_t window = 20;
+  enum { window = 20 };
   uint8_t buf[window];
 
   FILE *file = fopen(file_path, "r");

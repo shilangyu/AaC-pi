@@ -4,3 +4,5 @@ pi
 .vscode/
 
 out.txt
+.vs/
+*.user

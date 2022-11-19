@@ -1,5 +1,6 @@
 #include "table.h"
 #include "find.h"
+#include "io_shim.h"
 #include "main.h"
 #include "mmap.h"
 #include <fcntl.h>
@@ -8,9 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <sys/stat.h>
-#include <unistd.h>
 
 void write_result(FILE *out, size_t number, int64_t offset) {
   if (offset == -1) {
@@ -42,7 +41,7 @@ int handle_table(command_table_t args) {
 
   // figure out how many places are needed for a number
   const size_t len = snprintf(NULL, 0, "%" PRId64, args.n) + 1;
-  char substr[len];
+  char *substr     = malloc(len * sizeof(char));
   for (size_t i = 0; i <= args.n; i++) {
     snprintf(substr, len, "%zu", i);
     int64_t offset = kmp(data, stats.st_size, substr);
@@ -53,6 +52,7 @@ int handle_table(command_table_t args) {
   CHECK(munmap(data, stats.st_size));
   CHECK(close(fd));
   CHECK(fclose(out));
+  free(substr);
 
   return EXIT_SUCCESS;
 }

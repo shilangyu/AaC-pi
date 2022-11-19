@@ -1,5 +1,5 @@
 #include "chudnovsky.h"
-#include <gmp.h>
+#include "gmp_shim.h"
 #include <math.h>
 #include <stdlib.h>
 

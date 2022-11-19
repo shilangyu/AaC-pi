@@ -16,7 +16,7 @@ const char *get_command_name(command_type_t type) {
   }
 }
 
-__attribute__((noreturn)) void print_help_and_exit(const char *program_name) {
+_Noreturn void print_help_and_exit(const char *program_name) {
   fprintf(stderr, "%s: pi generator, substring finder, and solution comparator.\n", program_name);
   fprintf(stderr, "Available commands:\n");
   fprintf(stderr, "\t%s %s [file] [n-digits]: generates #n-digits digits of pi into the specified file\n", program_name, get_command_name(GENERATE));

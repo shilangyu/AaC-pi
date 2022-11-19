@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install pandoc, texlive
+        run: |
+          sudo apt-get update -qq
+          curl https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb -L --output pandoc.deb
+          sudo apt install ./pandoc.deb
+          sudo apt-get install -y texlive
+
+      - name: Generate pdf
+        run: |
+          mkdir out
+          echo '<a href="./documentation.pdf">documentation</a>' > out/index.html
+          make doc
+          mv build/documentation.pdf out
+
+      - name: Deploy pdf to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          BRANCH: gh-pages
+          FOLDER: out

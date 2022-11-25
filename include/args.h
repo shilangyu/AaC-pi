@@ -27,7 +27,8 @@ typedef struct {
 typedef struct {
   const char *pi_file_path;
   const char *out_file_path;
-  uint64_t n;
+  uint64_t a;
+  uint64_t b;
 } command_table_t;
 
 // Tagged union of possible CLI commands

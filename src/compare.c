@@ -27,8 +27,8 @@ int64_t compare(const char *file_name1, const char *file_name2) {
   assert(COMPARE_BUFFER_SIZE / sizeof(compare_size_t) * sizeof(compare_size_t) == COMPARE_BUFFER_SIZE);
   int64_t result = -1;
 
-  uint8_t buff_1[COMPARE_BUFFER_SIZE];
-  uint8_t buff_2[COMPARE_BUFFER_SIZE];
+  uint8_t *buff_1 = malloc(COMPARE_BUFFER_SIZE * sizeof(uint8_t));
+  uint8_t *buff_2 = malloc(COMPARE_BUFFER_SIZE * sizeof(uint8_t));
 
   compare_size_t *buff_1_64 = (compare_size_t *)buff_1;
   compare_size_t *buff_2_64 = (compare_size_t *)buff_2;
@@ -58,6 +58,8 @@ int64_t compare(const char *file_name1, const char *file_name2) {
 
       if (result != -1) break;
 
+      free(buff_1);
+      free(buff_2);
       return -2;
     }
 
@@ -68,6 +70,8 @@ int64_t compare(const char *file_name1, const char *file_name2) {
 
   CHECK(fclose(file_1));
   CHECK(fclose(file_2));
+  free(buff_1);
+  free(buff_2);
 
   return result;
 }
@@ -87,7 +91,7 @@ void print_diff(const char *file_path, int64_t diff) {
 
   printf("%s: ", file_path);
   if (move != 0) {
-    printf("…");
+    printf(ELLIPSIS);
   }
 
   printf("\x1b[32m");
@@ -97,7 +101,7 @@ void print_diff(const char *file_path, int64_t diff) {
   for (size_t i = diff - move + 1; i < read; i++)
     printf("%c", buf[i]);
 
-  printf("…\n");
+  printf(ELLIPSIS "\n");
 
   CHECK(fclose(file));
 }

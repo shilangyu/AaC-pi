@@ -91,7 +91,7 @@ void print_diff(const char *file_path, int64_t diff) {
 
   printf("%s: ", file_path);
   if (move != 0) {
-    printf("…");
+    printf(ELLIPSIS);
   }
 
   printf("\x1b[32m");
@@ -101,7 +101,7 @@ void print_diff(const char *file_path, int64_t diff) {
   for (size_t i = diff - move + 1; i < read; i++)
     printf("%c", buf[i]);
 
-  printf("…\n");
+  printf(ELLIPSIS "\n");
 
   CHECK(fclose(file));
 }

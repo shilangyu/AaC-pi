@@ -97,7 +97,7 @@ void print_sub(const char *file_path, int64_t offset, size_t length) {
   size_t read = fread(buf, 1, window + length, file);
 
   if (move != 0)
-    printf("…");
+    printf(ELLIPSIS);
   for (size_t i = 0; i < offset - move; i++)
     printf("%c", buf[i]);
   printf("\x1b[1;32m");
@@ -106,7 +106,7 @@ void print_sub(const char *file_path, int64_t offset, size_t length) {
   printf("\x1b[0m");
   for (size_t i = offset - move + length; i < read; i++)
     printf("%c", buf[i]);
-  printf("…\n");
+  printf(ELLIPSIS "\n");
 
   CHECK(fclose(file));
   free(buf);

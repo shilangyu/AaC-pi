@@ -12,3 +12,9 @@
   } while (0)
 
 #define MAX(a, b) (((a) < (b)) ? (b) : (a))
+
+#ifdef _WIN32
+#define ELLIPSIS ""
+#else
+#define ELLIPSIS "…"
+#endif

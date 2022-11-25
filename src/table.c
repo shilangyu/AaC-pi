@@ -40,9 +40,9 @@ int handle_table(command_table_t args) {
   if (out == NULL) ERR(args.out_file_path);
 
   // figure out how many places are needed for a number
-  const size_t len = snprintf(NULL, 0, "%" PRId64, args.n) + 1;
+  const size_t len = snprintf(NULL, 0, "%" PRId64, args.b) + 1;
   char *substr     = malloc(len * sizeof(char));
-  for (size_t i = 0; i <= args.n; i++) {
+  for (size_t i = args.a; i <= args.b; i++) {
     snprintf(substr, len, "%zu", i);
     int64_t offset = kmp(data, stats.st_size, substr);
 

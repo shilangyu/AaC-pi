@@ -34,10 +34,43 @@ Available commands:
         ./pi generate [file] [n-digits]: generates #n-digits digits of pi into the specified file
         ./pi find [file] [substring]: finds the given substring in the given file and prints the starting index
         ./pi compare [file1] [file2]: compares contents of two files and points to (if there is one) a difference
-        ./pi table [pi_file] [out_file] [n]: writes a table of substrings of natural numbers up to n to out_file from the pi_file
+        ./pi table [pi_file] [out_file] [a] [b]: writes a table of substrings of natural numbers from a to b to n to out_file from the pi_file
 ```
 
 \normalsize
+
+To compile this program on Windows the following steps have to be taken:
+
+1. enter the sources and open the `aac-pi.sln` project file in Visual Studio 2022
+2. set the "Release" configuration and "x64" architecture
+3. right-click the "aac-pi" project in the solution explorer on the right side and select "build"
+4. once completed visual studio can be closed and the executable can be found in `./build/x64/Release/aac-pi.exe`
+
+As in the above description of all available commands one can proceed by using this executable. Please use PowerShell to execute these commands. What follows are a few examples of invocation:
+
+- generate $10^8$ digits of $\pi$ into the file `out.txt`
+
+```
+./build/x64/Release/aac-pi.exe generate out.txt 100000000
+```
+
+- generate a table of all substrings and their location from the file `out.txt` of natural numbers from 101 to 2000 into the file `table.csv`
+
+```
+./build/x64/Release/aac-pi.exe table out.txt table.csv 101 2000
+```
+
+- compare file `out1.txt` with `out2.txt` and print the location where they differ. If they do not differ nothing is printed.
+
+```
+./build/x64/Release/aac-pi.exe compare out1.txt out2.txt
+```
+
+- find substring `123456` in the file `out.txt`
+
+```
+./build/x64/Release/aac-pi.exe find out.txt 123456
+```
 
 ## Generate
 

@@ -1,4 +1,6 @@
 #pragma once
+#include <stdio.h>
+#include <stdlib.h>
 
 // used for unrecoverable errors (panics)
 #define ERR(source)                                                \

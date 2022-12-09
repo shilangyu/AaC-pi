@@ -4,6 +4,8 @@
 
 Repository for the $\pi$ generation project for the Algorithms and Computability course at the MiNI faculty.
 
+Single-threaded and in-memory. Can generate $10^8$ digits of $\pi$ under 2 minutes on modern hardware. For implementation details see https://shilangyu.dev/AaC-pi/documentation.pdf.
+
 ## Building
 
 ### POSIX systems
@@ -28,5 +30,5 @@ Available commands:
         ./pi generate [file] [n-digits]: generates #n-digits digits of π into the specified file
         ./pi find [file] [substring]: finds the given substring in the given file and prints the starting index
         ./pi compare [file1] [file2]: compares contents of two files and points to (if there is one) a difference
-        ./pi table [pi_file] [out_file] [n]: writes a table of substrings of natural numbers up to n to out_file from the pi_file
+        ./pi table [pi_file] [out_file] [a] [b]: writes a table of substrings of natural numbers from a to b to n to out_file from the pi_file
 ```

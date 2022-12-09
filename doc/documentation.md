@@ -206,7 +206,7 @@ The time includes memory allocation, computation, and writing the result to a fi
 
 ![Runtime of our and y-cruncher program for various targets of digits of $\pi$. Log scale for the y-axis.\label{fig:bench-log}](bench-log.png){width=58%}
 
-![Runtime of our and y-cruncher program for various targets of digits of $\pi$. Log scale for the y-axis.\label{fig:bench-linear}](bench-linear.png){width=58%}
+![Runtime of our and y-cruncher program for various targets of digits of $\pi$. Linear scale for the y-axis.\label{fig:bench-linear}](bench-linear.png){width=58%}
 
 The program was written in C and had a requirement of working on Windows. Due to that the program is not multithreaded because of a lack of standard library support from Microsoft. All benchmarks were performed in a single-threaded environment. Another limitation of the implementation is the previously mentioned lack of support for computations exceeding RAM space and lack of distributing capabilities, all of which are available in y-cruncher.
 

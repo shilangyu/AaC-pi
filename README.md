@@ -4,7 +4,7 @@
 
 Repository for the $\pi$ generation project for the Algorithms and Computability course at the MiNI faculty.
 
-Single-threaded and in-memory. Can generate $10^8$ digits of $\pi$ under 2 minutes on modern hardware. For implementation details see https://shilangyu.dev/AaC-pi/documentation.pdf.
+Single-threaded and in-memory. Can generate $10^8$ digits of $\pi$ under 2 minutes on modern hardware. For implementation details see https://github.shilangyu.dev/AaC-pi/documentation.pdf.
 
 ## Building
 
@@ -18,7 +18,7 @@ Download the source and open the project in Visual Studio, do not use the `Makef
 
 ## Documentation
 
-Hosted [here](https://shilangyu.dev/AaC-pi/documentation.pdf). To build documentation you will need to install [`pandoc`](https://pandoc.org/) and then run `make build doc`. You will find the generated pdf at `build/documentation.pdf`.
+Hosted [here](https://github.shilangyu.dev/AaC-pi/documentation.pdf). To build documentation you will need to install [`pandoc`](https://pandoc.org/) and then run `make build doc`. You will find the generated pdf at `build/documentation.pdf`.
 
 ## Usage
 
